@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../model/user.model.js');
+const User = require('../model/User.model.js');
 const Wallet = require('../model/Wallet.model.js');
 
 const register = async(req, res)=>{

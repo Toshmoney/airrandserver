@@ -1,5 +1,5 @@
-const taskModel = require("../model/Task.model");
-const Review = require("../model/reviews.model");
+const taskModel = require("../model/Task.model.js");
+const Review = require("../model/Reviews.model.js");
 
 
 const createReview = async(req, res)=>{
