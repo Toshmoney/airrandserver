@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user.model.js');
+const Wallet = require('../model/Wallet.model.js');
 
 const register = async(req, res)=>{
 try {
@@ -33,8 +34,12 @@ try {
       userType, 
     });
 
-   
+    const userWallet = new Wallet({
+        user: newUser._id
+    })
+
     await newUser.save();
+    await userWallet.save()
 
     // Generate JWT
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });

@@ -7,11 +7,11 @@ const updateAccountStatus = async (req, res, next) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
     if (req.user.userType !== 'admin') {
-      return res.status(403).json({ message: "Forbidden: You are not authorized to update account status" });
+      return res.status(403).json({ message: "You are not authorized to update account status" });
     }
 
     user.accountStatus = accountStatus;
