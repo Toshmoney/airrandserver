@@ -55,17 +55,21 @@ const toggleAvailability = async (req, res, next) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
-    user.availability = !user.availability;
+    if(user.availability){
+        user.availability = false
+    }
+
+    user.availability = true;
 
     await user.save();
 
     res.status(200).json({ message: "Availability updated successfully", user: user });
   } catch (error) {
     console.error("Error toggling availability:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

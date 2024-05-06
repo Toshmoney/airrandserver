@@ -6,13 +6,15 @@ const reviewSchema = new Schema(
     tasker: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true
     },
     client: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true
     },
+    task: {
+        type: Schema.Types.ObjectId,
+        ref: 'Task',
+      },
     taskerRating: {
       type: Number,
       min: 1,

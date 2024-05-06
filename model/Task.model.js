@@ -46,6 +46,10 @@ const taskSchema = new Schema({
     },
     skills:{
         type:Array,
+    },
+    review:{
+        type:Schema.Types.ObjectId,
+        ref:"Task"
     }
 });
 
