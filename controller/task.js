@@ -62,6 +62,14 @@ const getAllTasksByTasker = async(req, res)=>{
 };
 
 
+const getTasksAndUpdateByClient = async(req, res)=>{
+    const {taskId} = req.params
+    const foundTask = await taskModel.findOne({client: req.user_id});
+    if(!foundTask) return res.status(404).json({error: "No task created yet"})
+    const updatedTask = await taskModel.findOneAndUpdate(taskId, req.body, {rurnValidator:true})
+    res.status(200).json({updatedTask})
+};
+
 
 
 module.exports ={
@@ -69,5 +77,6 @@ module.exports ={
     getAllTasks,
     getSingleTask,
     getAllTasksByClient,
-    getAllTasksByTasker
+    getAllTasksByTasker,
+    getTasksAndUpdateByClient
 }
