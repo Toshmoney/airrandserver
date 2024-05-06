@@ -10,13 +10,13 @@ const isLoggin = async (req, res, next) => {
       const user = await User.findById(decoded.userId);
 
       if (!user) {
-        return res.status(401).json({ message: "User not found" });
+        return res.status(401).json({ error: "User not found" });
       }
 
       req.user = user; 
       next();
     } catch (error) {
-      return res.status(403).json({ message: "Invalid token" });
+      return res.status(403).json({ error: "Invalid token" });
     }
   } else {
     res.status(401).json({ message: "Unauthorized" });
@@ -25,11 +25,11 @@ const isLoggin = async (req, res, next) => {
 
 const isAdmin = (req, res, next) => {
     if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ error: "Unauthorized" });
     }
   
     if (req.user.userType !== 'admin') {
-      return res.status(403).json({ message: "Forbidden: You are not an admin" });
+      return res.status(403).json({ error: "You are not an admin" });
     }
   
     next();
@@ -37,11 +37,11 @@ const isAdmin = (req, res, next) => {
   
   const isVerified = (req, res, next) => {
     if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ error: "Unauthorized" });
     }
   
     if (!req.user.isVerified) {
-      return res.status(403).json({ message: "Forbidden: Your account is not verified" });
+      return res.status(403).json({ error: "Your account is not verified" });
     }
   
     next();

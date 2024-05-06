@@ -11,7 +11,7 @@ const upload = multer({ dest: 'uploads/' })
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}))
 
-app.use("/api/v1", router)
+app.use("/user", router)
 
 app.listen(port, async()=>{
     console.log(`Server runnin on port ${port}`);

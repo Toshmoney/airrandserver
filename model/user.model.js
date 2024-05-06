@@ -31,7 +31,7 @@ const userSchema = new Schema(
     userType: {
       type: String,
       required: true,
-      enum: ["tasker", "client"]
+      enum: ["tasker", "client", "admin"]
     },
     profileDescription: {
       type: String
