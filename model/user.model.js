@@ -55,7 +55,10 @@ const userSchema = new Schema(
     availability: {
       type: Boolean,
       default: true
-    }
+    },
+
+    resetToken: String,
+    resetExpires: Date,
   },
   {
     timestamps: true

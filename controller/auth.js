@@ -16,9 +16,9 @@ try {
       return res.status(400).json({ message: "Password must be at least 6 characters long" });
     }
 
-    const existingUsername = await User.findOne({username});
+    const existingUsername = await User.findOne({username : username})
 
-    if(existingUsername) return res.status(400).json({error:"Sorry, this username is takenp"})
+    if(existingUsername) return res.status(400).json({error:"Sorry, this username is taken"})
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -41,12 +41,11 @@ try {
     await newUser.save();
     await userWallet.save()
 
-    // Generate JWT
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.status(201).json({ message: "User created successfully", token });
+    return res.status(201).json({ message: "User created successfully", token });
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error("Error creating user:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }

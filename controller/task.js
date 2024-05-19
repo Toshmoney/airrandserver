@@ -2,17 +2,32 @@ const multer  = require('multer')
 const taskModel = require("../model/Task.model.js");
 const upload = multer({ dest: 'uploads/' })
 
-const createTask = async(req, res)=>{
+const createTask = async (req, res) => {
     try {
-        const {title, description, price, duration, projectType, location, skills} = req.body;
-        if(!title || !description || !price || !duration || !projectType || !location || !skills){
-            return res.status(400).json({error: "Please fill all fields"})
+        const { title, description, price, duration, projectType, location, skills } = req.body;
+
+        if (!title || !description || !price || !duration || !projectType || !location || !skills) {
+            return res.status(400).json({ error: "Please fill all fields" });
+        }
+
+        if (isNaN(price) || price <= 0) {
+            return res.status(400).json({ error: "Price must be a positive number" });
+        }
+
+        if (isNaN(duration) || duration <= 0) {
+            return res.status(400).json({ error: "Duration must be a positive number" });
         }
 
         let taskImage;
+        if (req.files && req.files.taskImage) {
+            taskImage = req.files.taskImage.name;
+            const uploadPath = __dirname + '/uploads/' + taskImage;
 
-        if(req.file){
-            profilePicture = req.file.taskImage
+            req.files.taskImage.mv(uploadPath, function(err) {
+                if (err) {
+                    return res.status(500).json({ error: err.message });
+                }
+            });
         }
 
         const createdTask = new taskModel({
@@ -25,13 +40,14 @@ const createTask = async(req, res)=>{
             skills,
             client: req.user._id,
             taskImage
-        })
+        });
 
         await createdTask.save();
-        res.status(201).json({message: "New Task created successfully!!", createdTask})
+
+        res.status(201).json({ message: "New Task created successfully!!", createdTask });
     } catch (error) {
-        console.log(error.message);
-        res.json({error: error.message});
+        console.error(error.message);
+        res.status(500).json({ error: error.message });
     }
 };
 
