@@ -83,6 +83,21 @@ const checkUserPin = async (req, res, next) => {
   next();
 };
 
+const verifyUserPin = async (req, res, next) => {
+  const { pin } = req.body;
+  if (!pin) {
+    return res.status(400).json({error: "please provide transaction pin"})
+  }
+  const userPin = await TransactionPin.findOne({ user: req.user._id });
+  if (!userPin) {
+    return res.status(422).json({error: "user has no transaction pin"})
+  }
+  const isPinValid = await userPin.comparePin(pin);
+  if (!isPinValid) {
+    return res.status(400).json({error: "Incorrect transaction pin"})
+  }
+  next();
+};
 
   
 
@@ -91,5 +106,6 @@ module.exports = {
     isAdmin,
     isVerified,
     toggleAvailability,
-    checkUserPin
+    checkUserPin,
+    verifyUserPin
 };

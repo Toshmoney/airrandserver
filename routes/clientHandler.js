@@ -7,7 +7,7 @@ const {
     getSingleTask,
 } = require("../controller/task");
 
-const { isLoggin, isVerified } = require("../middleware/authentication");
+const { isLoggin, isVerified, checkUserPin, verifyUserPin } = require("../middleware/authentication");
 
 const {
 
@@ -16,6 +16,13 @@ const {
     
 } = require("../controller/offer");
 
+const {
+    createGiveaway,
+    awardGiveaway,
+    editGiveaway,
+    getGiveaway,
+    deleteGiveaway
+} = require("../controller/giveaway")
 
 const router = express.Router();
 
@@ -27,5 +34,12 @@ router.route("/edit-tasks:taskId").patch([isLoggin, isVerified], getTasksAndUpda
 router.route("/delete-tasks:taskId").delete([isLoggin, isVerified], deleteTaskByClient);
 router.route("/offer-task/:taskId/:taskerId").post([isLoggin, isVerified], offerTaskByClient)
 router.route("/acknowledge-completion/:taskId").post([isLoggin, isVerified], acknowledgeTaskCompletionByClient)
+
+// Giveaway
+router.route("/giveaway").post([isLoggin, isVerified, verifyUserPin], createGiveaway)
+router.route("/giveaway/:giveawayId").get([isLoggin], getGiveaway)
+router.route("/giveaway/:giveawayId").put([isLoggin, isVerified,], editGiveaway)
+router.route("/giveaway/:giveawayId").put([isLoggin, isVerified,], deleteGiveaway)
+router.route("/giveaway/:giveawayId/award/:winnerId").post([isLoggin, isVerified, verifyUserPin], awardGiveaway)
 
 module.exports = router;
