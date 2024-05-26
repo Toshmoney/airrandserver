@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors")
 const fileUpload = require('express-fileupload');
 const bodyParser = require("body-parser");
 const router = require("./routes/handler");
@@ -11,6 +12,7 @@ const upload = multer({ dest: 'uploads/' })
 
 app.use(express.json());
 app.use(fileUpload());
+app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}))
 
 app.get("/", (req, res)=>{
