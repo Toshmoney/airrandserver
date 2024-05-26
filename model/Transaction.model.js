@@ -7,6 +7,11 @@ const TransactionSchema = new Schema({
         required:true
     },
 
+    amount:{
+        type:Number,
+        required:true
+    },
+
     TransactionType : {
         type:String,
         enum: ["credit", "debit"],
@@ -14,12 +19,21 @@ const TransactionSchema = new Schema({
     },
     TransactionStatus : {
         type:String,
-        enum: ["pending", "completed", "cancel"],
+        enum: ["pending", "completed", "failed"],
         required: true
     },
     details:{
         type:String,
         required:true
+    },
+
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    reference_number:{
+        type:String,
+        trim:true
     }
 });
 
