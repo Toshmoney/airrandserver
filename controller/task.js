@@ -1,11 +1,13 @@
 const multer  = require('multer')
 const taskModel = require("../model/Task.model.js");
+const Wallet = require("../model/Wallet.model.js")
 const upload = multer({ dest: 'uploads/' })
 
 const createTask = async (req, res) => {
     try {
         const { title, description, price, duration, projectType, location, skills } = req.body;
 
+        
         // Check for missing fields
         if (!title || !description || !price || !duration || !projectType || !location || !skills) {
             return res.status(400).json({ error: "Please fill all fields" });
@@ -20,6 +22,26 @@ const createTask = async (req, res) => {
         if (isNaN(duration) || duration <= 0) {
             return res.status(400).json({ error: "Duration must be a positive number" });
         }
+
+        const user = req.user;
+
+        // Fetch user's wallet
+        let wallet = await Wallet.findOne({ user: user });
+        if (!wallet) {
+            wallet = new Wallet({
+                user: user,
+                balance: 0,
+            });
+        }
+
+        // Check if user has sufficient balance
+        if (wallet.balance < price) {
+            return res.status(400).json({ error: "Insufficient funds in user wallet" });
+        }
+
+        // Deduct task price from user's balance
+        wallet.balance -= price;
+        await wallet.save();
 
         // Handle file upload if at all included by the client present
         let taskImage;
