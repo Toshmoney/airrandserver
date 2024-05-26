@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../model/User.model');
+const TransactionPin = require("../model/TransactionPin")
 
 const isLoggin = async (req, res, next) => {
   const token = req.headers.authorization;
@@ -73,6 +74,15 @@ const toggleAvailability = async (req, res, next) => {
   }
 };
 
+const checkUserPin = async (req, res, next) => {
+  const userPin = await TransactionPin.findOne({ user: req.user._id });
+  req.session.requestedUrl = req.originalUrl;
+  if (!userPin) {
+    return res.status(400).json({error: "Set your transaction pin to continue"})
+  }
+  next();
+};
+
 
   
 
@@ -80,5 +90,6 @@ module.exports = {
     isLoggin,
     isAdmin,
     isVerified,
-    toggleAvailability
+    toggleAvailability,
+    checkUserPin
 };
