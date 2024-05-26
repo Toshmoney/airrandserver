@@ -19,7 +19,7 @@ const taskSchema = new Schema({
     taskStatus: {
         type:String,
         required:true,
-        enum:["pending", "in-progress", "completed", "cancel"],
+        enum:["pending", "in-progress", "completed", "rejected", "acknowledged"],
         default: "pending"
     },
     client:{
@@ -51,7 +51,12 @@ const taskSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"Task"
     }
-});
+},
+{
+    timestamps:true
+}
+
+);
 
 const taskModel = new model("Task", taskSchema);
 
