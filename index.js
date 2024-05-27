@@ -4,6 +4,7 @@ const cors = require("cors")
 const fileUpload = require('express-fileupload');
 const bodyParser = require("body-parser");
 const router = require("./routes/handler");
+const chatRouter = require("./routes/messageRoutes");
 const clientRouter = require("./routes/clientHandler")
 const adminRouter = require("./routes/adminRoutes")
 const connectDB = require("./db/connectDB");
@@ -22,8 +23,13 @@ app.get("/", (req, res)=>{
 })
 
 app.use("/user", router)
+app.use("/chats", chatRouter)
 app.use("/client", clientRouter)
 app.use("/admin", adminRouter)
+
+app.all("*", (req, res)=>{
+    res.status(404).json({error:"The endpoint you are looking for does not exists!"})
+})
 
 app.listen(port, async()=>{
     console.log(`Server runnin on port ${port}`);
