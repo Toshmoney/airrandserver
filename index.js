@@ -27,9 +27,9 @@ app.use("/chats", chatRouter)
 app.use("/client", clientRouter)
 app.use("/admin", adminRouter)
 
-app.all("*", (req, res)=>{
-    res.status(404).json({error:"The endpoint you are looking for does not exists!"})
-})
+// app.all("*", (req, res)=>{
+//     res.status(404).json({error:"The endpoint you are looking for does not exists!"})
+// })
 
 app.listen(port, async()=>{
     console.log(`Server runnin on port ${port}`);

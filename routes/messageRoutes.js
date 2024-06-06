@@ -1,4 +1,4 @@
-import { isLoggin, isVerified } from "../middleware/authentication";
+const { isLoggin, isVerified } = require("../middleware/authentication");
 
 const express = require ("express");
 const { getMessages, sendMessage, getConversations } = require("../controller/message");
