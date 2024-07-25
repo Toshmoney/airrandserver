@@ -1,5 +1,5 @@
 const express = require("express");
-const { register, login } = require("../controller/auth");
+const { register, login, forgetPassword, updatePassword } = require("../controller/auth");
 const {
     getSingleTask,
     getAllTasks,
@@ -15,11 +15,14 @@ const {
 } = require("../controller/offer");
 const { fetchSupportBanks, withdrawalRequest } = require("../controller/wallet");
 const { bidForGiveaway, getAllGiveaways } = require("../controller/giveaway");
+const { loginValidators } = require("../utils/validator");
 const router = express.Router();
 
 // Register and login
 router.route("/register").post(register)
-router.route("/login").post(login);
+router.route("/login").post([loginValidators],login);
+router.route("/reset-password").post(forgetPassword);
+router.route("/update-password").post(updatePassword);
 
 // Fetch all supported banks
 router.route("/fetch-supported-banks").get([isLoggin], fetchSupportBanks);

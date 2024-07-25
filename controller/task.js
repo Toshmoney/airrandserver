@@ -36,7 +36,7 @@ const createTask = async (req, res) => {
 
         // Check if user has sufficient balance
         if (wallet.balance < price) {
-            return res.status(400).json({ error: "Insufficient funds in user wallet" });
+            return res.status(400).json({ error: "Insufficient funds in user wallet", success:false });
         }
 
         // Deduct task price from user's balance
@@ -78,10 +78,10 @@ const createTask = async (req, res) => {
         await createdTask.save();
 
         // Respond with success message and the created task
-        res.status(201).json({ message: "New Task created successfully!!", createdTask });
+        res.status(201).json({ message: "New Task created successfully!!", createdTask, success:true });
     } catch (error) {
         console.error(error.message);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message, success:false });
     }
 };
 
@@ -94,7 +94,7 @@ const getAllTasks = async (req, res) => {
             return res.status(404).json({ error: "No tasks created yet" });
         }
 
-        return res.status(200).json({ tasks: foundTasks });
+        return res.status(200).json({ tasks: foundTasks, success:true });
     } catch (error) {
         return res.status(500).json({ error: error.message || "Error while fetching tasks" });
     }
@@ -107,7 +107,7 @@ const getSingleTask = async (req, res) => {
         const foundTask = await taskModel.findById(taskId);
 
         if (!foundTask) {
-            return res.status(404).json({ error: "This task does not exist or has been deleted" });
+            return res.status(404).json({ error: "This task does not exist or has been deleted", success:false });
         }
 
         return res.status(200).json({ task: foundTask });
