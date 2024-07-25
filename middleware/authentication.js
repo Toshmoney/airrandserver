@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const User = require('../model/User.model');
+const User = require('../model/user.model.js');
+
 const TransactionPin = require("../model/TransactionPin")
 
 const isLoggin = async (req, res, next) => {

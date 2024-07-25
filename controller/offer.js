@@ -1,5 +1,5 @@
 const taskModel = require("../model/Task.model");
-const User = require("../model/User.model");
+const User = require('../model/user.model.js');
 const Wallet = require("../model/Wallet.model");
 const offerModel = require("../model/offer.model");
 
